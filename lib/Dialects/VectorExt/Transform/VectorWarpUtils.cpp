@@ -154,10 +154,7 @@ struct WarpOpElementwise : public OpRewritePattern<WarpSingleLaneOp> {
     SmallVector<Value> yieldValues;
     SmallVector<Type> retTypes;
     for (OpOperand &operand : elementWise->getOpOperands()) {
-      auto targetType = VectorType::get(
-          distributedVal.getType().cast<VectorType>().getShape(),
-          operand.get().getType().cast<VectorType>().getElementType());
-      retTypes.push_back(targetType);
+      retTypes.push_back(distributedVal.getType());
       yieldValues.push_back(operand.get());
     }
     WarpSingleLaneOp newWarpOp = moveRegionToNewWarpOpAndAppendReturns(
